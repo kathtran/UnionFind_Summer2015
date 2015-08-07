@@ -3,15 +3,14 @@ package com.company;
 import java.util.ArrayList;
 
 /**
- * Assignment 4 | Problem 1.(b)
- * Implementation of pseudocode for Union Find
+ * CS350 - Lots Of Topics
+ * Problem 1.(b)
+ * <p>
+ * Implementation of pseudocode for Union-Find.
  *
  * @author Kathleen Tran
  */
 public class UnionFind {
-    /**
-     * Container for vertices.
-     */
     private static ArrayList<Vertex> vertices = new ArrayList<>();
 
     /**
@@ -24,10 +23,18 @@ public class UnionFind {
         unionFind.displayAllVertices();
 
         unionFind.init();
-        unionFind.union(vertices.get(2), vertices.get(3));
-        unionFind.union(vertices.get(4), vertices.get(2));
-        unionFind.union(vertices.get(6), vertices.get(2));
-        unionFind.displayForest(vertices.get(2));
+        unionFind.union(vertices.get(8), vertices.get(3));
+        unionFind.union(vertices.get(10), vertices.get(1));
+        unionFind.union(vertices.get(7), vertices.get(0));
+        unionFind.union(vertices.get(11), vertices.get(12));
+        unionFind.union(vertices.get(10), vertices.get(13));
+        unionFind.union(vertices.get(6), vertices.get(12));
+        unionFind.union(vertices.get(1), vertices.get(12));
+        unionFind.union(vertices.get(4), vertices.get(3));
+        unionFind.union(vertices.get(5), vertices.get(1));
+        unionFind.displayForest(vertices.get(11));
+        unionFind.displayForest(vertices.get(1));
+        unionFind.displayForest(vertices.get(8));
     }
 
     /**
@@ -98,6 +105,7 @@ public class UnionFind {
                 "\n\tCanonical representative: " + parent.getValue() +
                 "\n\tThe rest of the forest: ");
         displayForestRecursively(parent);
+        System.out.print("\n");
     }
 
     /**
