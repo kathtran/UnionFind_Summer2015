@@ -38,7 +38,7 @@ public class UnionFind {
             createMappings();
             displayPartitions();
 
-            System.out.println("\nTotal running time: " + unionFind.endTimer() + " s");
+            System.out.println("\nTotal running time: " + unionFind.endTimer() + " s    ");
         } catch (StackOverflowError ex) {
             System.err.println("An expected error that is associated with utilizing the RNG to map vertices has occurred. " +
                     "Please just re-run the program.");
