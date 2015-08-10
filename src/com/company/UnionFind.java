@@ -1,6 +1,8 @@
 package com.company;
 
 import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
 
 /**
  * CS350 - Lots Of Topics
@@ -11,7 +13,14 @@ import java.util.ArrayList;
  * @author Kathleen Tran
  */
 public class UnionFind {
-    private static ArrayList<Vertex> vertices = new ArrayList<>();
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final Random random = new Random();
+    private static final ArrayList<Vertex> vertices = new ArrayList<>();
+    private static UnionFind unionFind;
+    private static int[] makeVertices;
+    private static int numberOfVertices;
+    private static int i;
+    private long starting;
 
     /**
      * Allocates data and tests the correctness and performance of the code.
@@ -19,22 +28,71 @@ public class UnionFind {
      * @param args an array of integers used to populate the vertices
      */
     public static void main(String[] args) {
-        UnionFind unionFind = new UnionFind(args);
+        createVertices();
+        unionFind = new UnionFind(makeVertices);
         unionFind.displayAllVertices();
+        unionFind.startTime();
 
-        unionFind.init();
-        unionFind.union(vertices.get(8), vertices.get(3));
-        unionFind.union(vertices.get(10), vertices.get(1));
-        unionFind.union(vertices.get(7), vertices.get(0));
-        unionFind.union(vertices.get(11), vertices.get(12));
-        unionFind.union(vertices.get(10), vertices.get(13));
-        unionFind.union(vertices.get(6), vertices.get(12));
-        unionFind.union(vertices.get(1), vertices.get(12));
-        unionFind.union(vertices.get(4), vertices.get(3));
-        unionFind.union(vertices.get(5), vertices.get(1));
-        unionFind.displayForest(vertices.get(11));
-        unionFind.displayForest(vertices.get(1));
-        unionFind.displayForest(vertices.get(8));
+        try {
+            unionFind.init();
+            createMappings();
+            displayPartitions();
+
+            System.out.println("\n\nTotal running time: " + unionFind.endTimer());
+        } catch (StackOverflowError ex) {
+            System.err.println("An expected error that is associated with utilizing the RNG to map vertices has occurred. " +
+                    "Please just re-run the program.");
+            System.exit(1);
+        }
+    }
+
+    /**
+     * Creates a set of vertices of some user-specified size that is filled with random integers.
+     */
+    private static void createVertices() {
+        System.out.print("How many vertices would you like to begin with?: ");
+        numberOfVertices = scanner.nextInt();
+        scanner.nextLine(); // clear buffer
+
+        makeVertices = new int[numberOfVertices];
+        i = 0;
+        while (i < numberOfVertices) {
+            int vertex = random.nextInt(50);
+            makeVertices[i] = vertex;
+            i = i + 1;
+        }
+    }
+
+    /**
+     * Randomly maps vertices a user-defined number of times.
+     */
+    private static void createMappings() {
+        System.out.print("How many times would you like to create mappings?: ");
+        int numberOfMappings = scanner.nextInt();
+        scanner.nextLine();
+
+        i = 0;
+        while (i < numberOfMappings) {
+            int mapChild = random.nextInt(numberOfVertices - 1);
+            int mapParent = random.nextInt(numberOfVertices - 1);
+            unionFind.union(vertices.get(mapChild), vertices.get(mapParent));
+            i = i + 1;
+        }
+    }
+
+    /**
+     * Displays all forests and displays total number of partitions.
+     */
+    private static void displayPartitions() {
+        int partitionCount = 0;
+        for (i = 0; i < numberOfVertices; ++i) {
+            if (!vertices.get(i).getParent().isDisplayed()) {
+                unionFind.displayForest(vertices.get(i));
+                vertices.get(i).getParent().setDisplayed(true);
+                partitionCount = partitionCount + 1;
+            }
+        }
+        System.out.println("\nThere exists " + partitionCount + " partitions.");
     }
 
     /**
@@ -42,9 +100,9 @@ public class UnionFind {
      *
      * @param args list of integers
      */
-    public UnionFind(String[] args) {
-        for (String arg : args)
-            vertices.add(new Vertex(Integer.parseInt(arg)));
+    public UnionFind(int[] args) {
+        for (int arg : args)
+            vertices.add(new Vertex(arg));
     }
 
     /**
@@ -122,5 +180,26 @@ public class UnionFind {
             if (find(v).equals(parent))
                 System.out.print(v.getValue() + " ");
         }
+    }
+
+    /**
+     * Starts the counter.
+     *
+     * @return starting time
+     */
+    public long startTime() {
+        starting = System.currentTimeMillis();
+        return starting;
+    }
+
+    /**
+     * Calculates the time between when the counter was started and ended.
+     *
+     * @return time representative of duration between the call to the startTime
+     * method and the call to this method
+     */
+    public double endTimer() {
+        long ending = System.currentTimeMillis();
+        return ((ending - starting) / 1000.0);
     }
 }

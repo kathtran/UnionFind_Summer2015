@@ -5,9 +5,11 @@ package com.company;
  */
 public class Vertex extends Data {
     private Vertex parent;
+    private boolean displayed;
 
     public Vertex() {
         parent = null;
+        displayed = false;
     }
 
     public Vertex(int value) {
@@ -20,5 +22,13 @@ public class Vertex extends Data {
 
     public void setParent(Vertex parent) {
         this.parent = parent;
+    }
+
+    public boolean isDisplayed() {
+        return displayed;
+    }
+
+    public void setDisplayed(boolean displayed) {
+        this.displayed = displayed;
     }
 }
