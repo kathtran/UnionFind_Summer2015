@@ -98,6 +98,13 @@ public class Kruskals {
         fr.close();
     }
 
+    /**
+     * Mark each vertex in the set of vertices as its own forest.
+     */
+    private void init() {
+        for (Map.Entry<String, City> entry : cities.entrySet())
+            entry.getValue().setForest(entry.getValue());
+    }
 
     /**
      * Starts the counter.

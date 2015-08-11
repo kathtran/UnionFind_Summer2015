@@ -7,12 +7,31 @@ import java.util.Map;
  * @author Kathleen Tran
  */
 public class City {
-    private Map<City, Integer> edgeList = new HashMap<>();
     private String name;
+    private City forest;
+    private Map<City, Integer> edgeList = new HashMap<>();
     private boolean visited = false;
 
     public City(String name) {
         this.name = name;
+    }
+
+    /**
+     * Adds an entry into the edge list.
+     *
+     * @param city     some city
+     * @param distance the distance between this city and the supplied city
+     */
+    public void addToEdgeList(City city, int distance) {
+        edgeList.put(city, distance);
+    }
+
+    /**
+     * Displays all entries in the edge list.
+     */
+    public void displayEdgeList() {
+        for (Map.Entry<City, Integer> entry : edgeList.entrySet())
+            System.out.println("CITY: " + entry.getKey().getName() + " & DISTANCE: " + entry.getValue());
     }
 
     public String getName() {
@@ -23,16 +42,12 @@ public class City {
         this.name = name;
     }
 
-    public Map<City, Integer> getEdgeList() {
-        return edgeList;
+    public City getForest() {
+        return forest;
     }
 
-    public void setEdgeList(Map<City, Integer> edgeList) {
-        this.edgeList = edgeList;
-    }
-
-    public void addToEdgeList(City city, int distance) {
-        edgeList.put(city, distance);
+    public void setForest(City forest) {
+        this.forest = forest;
     }
 
     public boolean isVisited() {
@@ -43,8 +58,11 @@ public class City {
         this.visited = visited;
     }
 
-    public void displayEdgeList() {
-        for (Map.Entry<City, Integer> entry : edgeList.entrySet())
-            System.out.println("CITY: " + entry.getKey().getName() + " & DISTANCE: " + entry.getValue());
+    public Map<City, Integer> getEdgeList() {
+        return edgeList;
+    }
+
+    public void setEdgeList(Map<City, Integer> edgeList) {
+        this.edgeList = edgeList;
     }
 }
