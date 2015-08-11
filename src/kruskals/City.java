@@ -10,7 +10,6 @@ public class City {
     private String name;
     private City forest;
     private Map<City, Integer> edgeList = new HashMap<>();
-    private boolean visited = false;
     private boolean displayed = false;
 
     public City(String name) {
@@ -49,14 +48,6 @@ public class City {
 
     public void setForest(City forest) {
         this.forest = forest;
-    }
-
-    public boolean isVisited() {
-        return visited;
-    }
-
-    public void setVisited(boolean visited) {
-        this.visited = visited;
     }
 
     public Map<City, Integer> getEdgeList() {

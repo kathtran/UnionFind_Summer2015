@@ -32,15 +32,12 @@ public class Kruskals {
             addCitiesToMap();                      // Add cities as vertices to the graph
             addEdgesToCities();                    // Add connecting cities and corresponding distances to existing vertices
             Collections.sort(weightedEdges);       // Sort edges shortest to longest distances
-            init();                       // Mark each city (vertex) as its own forest
-
+            init();                                // Mark each city (vertex) as its own forest
             findMST();
+            findNumberOfPartitions();
             System.out.println("\nTOTAL NUMBER OF EDGES: " + totalEdges);
             System.out.println("TOTAL DISTANCE: " + totalDistance + "\n");
-
-            findNumberOfPartitions();
-            System.out.println("There exists " + partitionCount + " partitions.");
-
+            System.out.println("There exists " + partitionCount + " partition(s)");
         } catch (FileNotFoundException e) {
             System.err.println("File not found!");
             System.exit(1);
@@ -57,7 +54,7 @@ public class Kruskals {
         for (Object edge : weightedEdges) {                                  // For each possible distance, starting with the shortest
             for (Map.Entry<String, City> city : cities.entrySet()) {         // For each city out of the 29 total cities
                 for (Map.Entry<City, Integer> connectedCity : city.getValue().getEdgeList().entrySet()) {
-                    if ((!find(city.getValue()).equals(find(connectedCity.getKey()))) && connectedCity.getValue() == edge) {
+                    if ((!find(city.getValue()).equals(find(connectedCity.getKey()))) && connectedCity.getValue() == (int) edge) {
                         edgesOfMST.add(connectedCity.getValue());
                         union(cities.get(city.getKey()), cities.get(connectedCity.getKey().getName()));
                         System.out.println(city.getKey() + " " + connectedCity.getKey().getName() + " " + connectedCity.getValue());
@@ -77,7 +74,7 @@ public class Kruskals {
     private static void findNumberOfPartitions() {
         for (Map.Entry<String, City> entry : cities.entrySet()) {
             if (!find(entry.getValue()).isDisplayed()) {
-                System.out.println(find(entry.getValue()).getName());
+//                System.out.println(find(entry.getValue()).getName());
                 find(entry.getValue()).setDisplayed(true);
                 partitionCount += 1;
             }
@@ -138,6 +135,17 @@ public class Kruskals {
     }
 
     /**
+     * Displays all cities and their connections/distances.
+     */
+    public static void printOutEverything() {
+        for (Map.Entry<String, City> city : cities.entrySet()) {
+            System.out.println("\n<--------- CITY : " + city.getKey() + " --------->");
+            for (Map.Entry<City, Integer> connectedCity : city.getValue().getEdgeList().entrySet())
+                System.out.println("Connected to " + connectedCity.getKey().getName() + " via " + connectedCity.getValue() + " miles.");
+        }
+    }
+
+    /**
      * Mark each vertex in the set of vertices as its own forest.
      */
     private static void init() {
@@ -167,7 +175,5 @@ public class Kruskals {
         City thisForest = find(here);
         City thatForest = find(there);
         thisForest.setForest(thatForest);
-        here.setVisited(true);
-        there.setVisited(true);
     }
 }
