@@ -31,7 +31,7 @@ public class City {
      */
     public void displayEdgeList() {
         for (Map.Entry<City, Integer> entry : edgeList.entrySet())
-            System.out.println("CITY: " + entry.getKey().getName() + " & DISTANCE: " + entry.getValue());
+            System.out.println("Connected to " + entry.getKey().getName() + " via " + entry.getValue() + " miles.");
     }
 
     public String getName() {

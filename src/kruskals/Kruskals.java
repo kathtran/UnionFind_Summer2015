@@ -40,8 +40,9 @@ public class Kruskals {
 //            System.out.println("\nCities printed from MAP. Now printing from EDGELIST\n\n");
             addEdgesToCities();
             for (Map.Entry<String, City> entry : cities.entrySet()) {
-                System.out.print("CITY : " + entry.getKey() + "\nEDGE LIST : \n");
+                System.out.print("<--------- CITY : " + entry.getKey() + " --------->\n");
                 entry.getValue().displayEdgeList();
+                System.out.println();
             }
             kruskals.init();
 
