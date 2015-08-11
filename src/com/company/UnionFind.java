@@ -87,7 +87,7 @@ public class UnionFind {
         int partitionCount = 0;
         for (i = 0; i < numberOfVertices; ++i) {
             if (!unionFind.find(vertices.get(i)).isDisplayed()) {
-                unionFind.displayForest(vertices.get(i));
+                unionFind.displayForest(unionFind.find(vertices.get(i)));
                 unionFind.find(vertices.get(i)).setDisplayed(true);
                 partitionCount = partitionCount + 1;
             }
