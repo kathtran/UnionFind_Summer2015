@@ -86,7 +86,7 @@ public class UnionFind {
     private static void displayPartitions() {
         int partitionCount = 0;
         for (i = 0; i < numberOfVertices; ++i) {
-            if (!vertices.get(i).getParent().isDisplayed()) {
+            if (!unionFind.find(vertices.get(i)).isDisplayed()) {
                 unionFind.displayForest(vertices.get(i));
                 vertices.get(i).getParent().setDisplayed(true);
                 partitionCount = partitionCount + 1;
@@ -159,7 +159,7 @@ public class UnionFind {
      */
     public void displayForest(Vertex vertex) {
         Vertex parent = find(vertex);
-        System.out.print("Display forest for vertex " + vertex.getValue() + ": " +
+        System.out.print("DISPLAYING FOREST" +
                 "\n\tCanonical representative: " + parent.getValue() +
                 "\n\tThe rest of the forest: ");
         displayForestRecursively(parent);
