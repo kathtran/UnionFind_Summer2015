@@ -14,7 +14,6 @@ import java.util.Map;
  * @author Kathleen Tran
  */
 public class Kruskals {
-    private static final Map<String, Vertex> cities = new HashMap<>();
     private static final File file = new File("city-pairs.txt");
 
     private static String[] allCities;
@@ -28,7 +27,7 @@ public class Kruskals {
     public static void main(String[] args) {
         try {
             readCities();
-            kruskals.init();
+//            kruskals.init();
 
             for (String city : allCities) {
                 System.out.println(city);
@@ -69,58 +68,6 @@ public class Kruskals {
         fr.close();
     }
 
-    /**
-     * Adds cities to the array list.
-     */
-    private void createVerticesFromCities() {
-        for (String city : allCities)
-            cities.put(city, new Vertex(city));
-    }
-
-    private void mapCitiesToCities() throws IOException {
-        fr = new FileReader(file);
-        br = new BufferedReader(fr);
-        String line = br.readLine();
-
-        while (line != null) {
-
-
-        }
-    }
-
-    /**
-     * Initializes vertices by setting each vertex's parent pointer to itself.
-     */
-    private void init() {
-        for (Map.Entry<String, Vertex> city : cities.entrySet())
-            city.getValue().setForest(city.getValue());
-    }
-
-    /**
-     * Finds the canonical representative of the given vertex.
-     *
-     * @param vertex some vertex
-     * @return the canonical representative of the given vertex
-     */
-    public Vertex find(Vertex vertex) {
-        if (vertex.equals(vertex.getForest()))
-            return vertex;
-        return find(vertex.getForest());
-    }
-
-    /**
-     * Joins two vertices to create a new forest. The second parameter
-     * becomes the parent of the first parameter.
-     *
-     * @param a some vertex
-     * @param b some vertex
-     */
-    public void union(Vertex a, Vertex b, int distance) {
-        Vertex aRep = find(a);
-        Vertex bRep = find(b);
-        aRep.setForest(bRep);
-        System.out.println("Mapped " + a.getCity() + " to " + b.getCity() + ".");
-    }
 
     /**
      * Starts the counter.
