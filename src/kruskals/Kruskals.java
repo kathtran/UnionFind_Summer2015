@@ -99,6 +99,10 @@ public class Kruskals {
         fr.close();
     }
 
+    private static void readWeightedEdges() {
+
+    }
+
     /**
      * Mark each vertex in the set of vertices as its own forest.
      */
@@ -117,6 +121,18 @@ public class Kruskals {
         if (city.equals(city.getForest()))
             return city;
         return find(city.getForest());
+    }
+
+    /**
+     * Joins two forests.
+     *
+     * @param here  some city
+     * @param there some other city
+     */
+    private void union(City here, City there) {
+        City thisForest = find(here);
+        City thatForest = find(there);
+        thisForest.setForest(thatForest);
     }
 
     /**
