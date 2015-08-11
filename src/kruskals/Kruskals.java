@@ -56,8 +56,8 @@ public class Kruskals {
                 for (Map.Entry<String, City> city : cities.entrySet()) {
                     // For each connected city
                     for (Map.Entry<City, Integer> connectedCity : city.getValue().getEdgeList().entrySet()) {
-                        // If the distance between the two cities are the one that we are looking for
-                        // AND they are not already within the same forest
+                        // If the distance between the two cities is the one that we are looking for
+                        // AND they are not already within the same forest, UNION them
                         if (connectedCity.getValue() == Integer.parseInt((String) edge) &&
                                 !find(connectedCity.getKey()).equals(find(city.getValue()))) {
                             union(city.getValue(), cities.get(connectedCity.getKey().getName()));
