@@ -93,7 +93,7 @@ public class Kruskals {
      */
     private void init() {
         for (Map.Entry<String, Vertex> city : cities.entrySet())
-            city.getValue().setParent(city.getValue());
+            city.getValue().setForest(city.getValue());
     }
 
     /**
@@ -103,9 +103,9 @@ public class Kruskals {
      * @return the canonical representative of the given vertex
      */
     public Vertex find(Vertex vertex) {
-        if (vertex.equals(vertex.getParent()))
+        if (vertex.equals(vertex.getForest()))
             return vertex;
-        return find(vertex.getParent());
+        return find(vertex.getForest());
     }
 
     /**
@@ -115,11 +115,11 @@ public class Kruskals {
      * @param a some vertex
      * @param b some vertex
      */
-    public void union(Vertex a, Vertex b) {
+    public void union(Vertex a, Vertex b, int distance) {
         Vertex aRep = find(a);
         Vertex bRep = find(b);
-        a.setParent(b);
-        System.out.println("City " + a.getCity() + " has been mapped to city " + b.getCity() + ".");
+        aRep.setForest(bRep);
+        System.out.println("Mapped " + a.getCity() + " to " + b.getCity() + ".");
     }
 
     /**

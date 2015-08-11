@@ -1,32 +1,38 @@
 package kruskals;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author Kathleen Tran
  */
 public class Vertex extends City {
-    private Vertex parent;
+    private Map<String, Vertex> edgeList = new HashMap<>();
+    private Vertex forest;
     private int distance;
     private boolean displayed;
 
-    public Vertex() {
-        parent = null;
-        distance = 0;
-        displayed = false;
-    }
-
     public Vertex(String name) {
         super(name);
-        parent = null;
+        forest = null;
         distance = 0;
         displayed = false;
     }
 
-    public Vertex getParent() {
-        return parent;
+    public Map<String, Vertex> getEdgeList() {
+        return edgeList;
     }
 
-    public void setParent(Vertex parent) {
-        this.parent = parent;
+    public void setEdgeList(Map<String, Vertex> edgeList) {
+        this.edgeList = edgeList;
+    }
+
+    public Vertex getForest() {
+        return forest;
+    }
+
+    public void setForest(Vertex forest) {
+        this.forest = forest;
     }
 
     public int getDistance() {
