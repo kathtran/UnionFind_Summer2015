@@ -58,9 +58,12 @@ public class Kruskals {
                     for (Map.Entry<City, Integer> connectedCity : city.getValue().getEdgeList().entrySet()) {
                         // If the distance between the two cities is the one that we are looking for
                         // AND they are not already within the same forest, UNION them
-                        if (connectedCity.getValue() == Integer.parseInt((String) edge) &&
-                                !find(connectedCity.getKey()).equals(find(city.getValue()))) {
+                        if (connectedCity.getValue() == edge &&
+                                !find(connectedCity.getKey()).equals(find(city.getValue())) &&
+                                !city.getValue().isVisited() && !connectedCity.getKey().isVisited()) {
                             union(city.getValue(), cities.get(connectedCity.getKey().getName()));
+                            System.out.print(city.getValue().getName() + " " + connectedCity.getKey().getName() + " " + connectedCity.getValue() + "\n");
+                            break;
                         }
                     }
                 }
@@ -151,6 +154,8 @@ public class Kruskals {
         City thisForest = find(here);
         City thatForest = find(there);
         thisForest.setForest(thatForest);
+        here.setVisited(true);
+        there.setVisited(true);
     }
 
     /**
