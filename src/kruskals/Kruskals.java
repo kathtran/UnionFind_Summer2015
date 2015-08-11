@@ -55,20 +55,9 @@ public class Kruskals {
                 for (Map.Entry<String, City> city : cities.entrySet()) {
                     // For each connected city
                     for (Map.Entry<City, Integer> connectedCity : city.getValue().getEdgeList().entrySet()) {
-                        // If the distance between the two cities is the one that we are looking for
-                        // AND they are not already within the same forest, UNION them
-//                        if (connectedCity.getValue() == edge) {
-//                            if (!city.getValue().isVisited() && !connectedCity.getKey().isVisited()) {
-//                                union(city.getValue(), cities.get(connectedCity.getKey().getName()));
-//                                System.out.print(city.getValue().getName() + " " + connectedCity.getKey().getName() + " " + connectedCity.getValue() + "\n");
-//                                totalLength += 1;
-//                            }
-//                        }
-                        if (find(city.getValue()).equals(find(connectedCity.getKey())))
-                            break;
-                        if (connectedCity.getValue() == edge) {
+                        if (!find(city.getValue()).equals(find(connectedCity.getKey())) && connectedCity.getValue() == edge) {
                             totalLength += 1;
-                            union(city.getValue(), connectedCity.getKey());
+                            union(city.getValue(), cities.get(connectedCity.getKey().getName()));
                             System.out.print(city.getValue().getName() + " " + connectedCity.getKey().getName() + " " + connectedCity.getValue() + "\n");
                         }
                     }
@@ -78,22 +67,23 @@ public class Kruskals {
             System.out.println("TOTAL LENGTH: " + totalLength);
 
 
-        } catch (
-                FileNotFoundException e
-                )
+            int partitionCount = 0;
+            for (Map.Entry<String, City> entry : cities.entrySet()) {
+                if (!find(entry.getValue()).isDisplayed()) {
+                    System.out.println(find(entry.getValue()).getName());
+                    find(entry.getValue()).setDisplayed(true);
+                    partitionCount = partitionCount + 1;
+                }
+            }
+            System.out.println("\nThere exists " + partitionCount + " partitions.");
 
-        {
+        } catch (FileNotFoundException e) {
             System.err.println("File not found!");
             System.exit(1);
-        } catch (
-                IOException e
-                )
-
-        {
+        } catch (IOException e) {
             System.err.println("IO-related error has occurred!");
             System.exit(1);
         }
-
     }
 
     /**
