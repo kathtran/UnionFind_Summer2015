@@ -39,14 +39,33 @@ public class Kruskals {
 //            System.out.println("\nCities printed from MAP. Now printing from EDGELIST\n\n");
             addEdgesToCities();                    // Add connecting cities and corresponding distances to existing vertices
             Collections.sort(weightedEdges);       // Sort edges shortest to longest distances
-            for (Object edge : weightedEdges)
-                System.out.println(edge);
+//            for (Object edge : weightedEdges)
+//                System.out.println(edge);
 //            for (Map.Entry<String, City> entry : cities.entrySet()) {
 //                System.out.print("<--------- CITY : " + entry.getKey() + " --------->\n");
 //                entry.getValue().displayEdgeList();
 //                System.out.println();
 //            }
-            kruskals.init();
+            kruskals.init();                       // Mark each city (vertex) as its own forest
+
+            City endOne;
+            City endTwo;
+            // For each possible distance, starting with the shortest
+            for (Object edge : weightedEdges) {
+                // For each city out of the 29 total cities
+                for (Map.Entry<String, City> city : cities.entrySet()) {
+                    // For each connected city
+                    for (Map.Entry<City, Integer> connectedCity : city.getValue().getEdgeList().entrySet()) {
+                        // If the distance between the two cities are the one that we are looking for
+                        // AND they are not already within the same forest
+                        if (connectedCity.getValue() == Integer.parseInt((String) edge) &&
+                                !find(connectedCity.getKey()).equals(find(city.getValue()))) {
+                            union(city.getValue(), cities.get(connectedCity.getKey().getName()));
+                        }
+                    }
+                }
+            }
+
 
         } catch (FileNotFoundException e) {
             System.err.println("File not found!");
@@ -116,7 +135,7 @@ public class Kruskals {
      * @param city some city
      * @return the canonical representative of the given city
      */
-    private City find(City city) {
+    private static City find(City city) {
         if (city.equals(city.getForest()))
             return city;
         return find(city.getForest());
@@ -128,7 +147,7 @@ public class Kruskals {
      * @param here  some city
      * @param there some other city
      */
-    private void union(City here, City there) {
+    private static void union(City here, City there) {
         City thisForest = find(here);
         City thatForest = find(there);
         thisForest.setForest(thatForest);
