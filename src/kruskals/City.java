@@ -7,7 +7,7 @@ public class City {
     private String city;
 
     public City() {
-        this.city = null;
+        city = null;
     }
 
     public City(String city) {

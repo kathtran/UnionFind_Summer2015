@@ -1,7 +1,8 @@
 package kruskals;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * CS350 - Lots Of Topics
@@ -13,17 +14,22 @@ import java.util.ArrayList;
  * @author Kathleen Tran
  */
 public class Kruskals {
-    private static final ArrayList<Vertex> cities = new ArrayList<>();
+    private static final Map<Vertex, Vertex> cities = new HashMap<>();
     private static final File file = new File("city-pairs.txt");
 
-    private long starting;
-    private static int i;
     private static String[] allCities;
-    private static String[] split;
+    private static FileReader fr;
+    private static BufferedReader br;
+    private static int i;
+    private static final Kruskals kruskals = new Kruskals();
+
+    private long starting;
 
     public static void main(String[] args) {
         try {
             readCities();
+            kruskals.init();
+
             for (String city : allCities) {
                 System.out.println(city);
             }
@@ -44,8 +50,8 @@ public class Kruskals {
      */
     private static void readCities() throws IOException {
         allCities = new String[29];
-        FileReader fr = new FileReader(file);
-        BufferedReader br = new BufferedReader(fr);
+        fr = new FileReader(file);
+        br = new BufferedReader(fr);
         String line = br.readLine();
         if (line != null)
             allCities[0] = line.split(" ")[0];
@@ -68,17 +74,26 @@ public class Kruskals {
      */
     private void createVerticesFromCities() {
         for (String city : allCities)
-            cities.add(new Vertex(city));
+            cities.put(new Vertex(city), null);
+    }
+
+    private void mapCitiesToCities() throws IOException {
+        fr = new FileReader(file);
+        br = new BufferedReader(fr);
+        String line = br.readLine();
+
+        while (line != null) {
+
+
+        }
     }
 
     /**
      * Initializes vertices by setting each vertex's parent pointer to itself.
      */
     private void init() {
-        for (Object element : cities) {
-            Vertex vertex = (Vertex) element;
-            vertex.setParent(vertex);
-        }
+        for (Map.Entry<Vertex, Vertex> city : cities.entrySet())
+            city.getKey().setParent(city.getKey());
     }
 
     /**
