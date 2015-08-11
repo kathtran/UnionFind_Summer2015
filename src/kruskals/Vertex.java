@@ -1,9 +1,9 @@
-package com.company;
+package kruskals;
 
 /**
  * @author Kathleen Tran
  */
-public class Vertex extends Data {
+public class Vertex extends City {
     private Vertex parent;
     private boolean displayed;
 
@@ -12,8 +12,8 @@ public class Vertex extends Data {
         displayed = false;
     }
 
-    public Vertex(int value) {
-        super(value);
+    public Vertex(String name) {
+        super(name);
         displayed = false;
     }
 
