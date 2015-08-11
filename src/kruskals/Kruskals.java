@@ -1,9 +1,7 @@
 package kruskals;
 
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 /**
  * CS350 - Lots Of Topics
@@ -17,6 +15,7 @@ import java.util.Random;
 public class Kruskals {
     private static final File file = new File("city-pairs.txt");
     private static final Map<String, City> cities = new HashMap<>();
+    private static final ArrayList weightedEdges = new ArrayList<>();
 
     private static String[] allCities;
     private static FileReader fr;
@@ -28,22 +27,25 @@ public class Kruskals {
 
     public static void main(String[] args) {
         try {
-            readCities();
+            readCities();                          // Load cities
 
 //            for (String city : allCities) {
 //                System.out.println(city);
 //            }
 //            System.out.println("\nCities printed from ARRAY. Now printing from MAP\n\n");
-            addCitiesToMap();
+            addCitiesToMap();                      // Add cities as vertices to the graph
 //            for (Map.Entry<String, City> entry : cities.entrySet())
 //                System.out.println(entry.getKey());
 //            System.out.println("\nCities printed from MAP. Now printing from EDGELIST\n\n");
-            addEdgesToCities();
-            for (Map.Entry<String, City> entry : cities.entrySet()) {
-                System.out.print("<--------- CITY : " + entry.getKey() + " --------->\n");
-                entry.getValue().displayEdgeList();
-                System.out.println();
-            }
+            addEdgesToCities();                    // Add connecting cities and corresponding distances to existing vertices
+            Collections.sort(weightedEdges);       // Sort edges shortest to longest distances
+            for (Object edge : weightedEdges)
+                System.out.println(edge);
+//            for (Map.Entry<String, City> entry : cities.entrySet()) {
+//                System.out.print("<--------- CITY : " + entry.getKey() + " --------->\n");
+//                entry.getValue().displayEdgeList();
+//                System.out.println();
+//            }
             kruskals.init();
 
         } catch (FileNotFoundException e) {
@@ -93,14 +95,11 @@ public class Kruskals {
 
         while (line != null) {
             cities.get(line.split(" ")[0]).addToEdgeList(cities.get(line.split(" ")[1]), Integer.parseInt(line.split(" ")[2]));
+            weightedEdges.add(Integer.parseInt(line.split(" ")[2]));
             line = br.readLine();
         }
         br.close();
         fr.close();
-    }
-
-    private static void readWeightedEdges() {
-
     }
 
     /**
