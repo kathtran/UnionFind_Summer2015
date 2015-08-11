@@ -3,6 +3,7 @@ package kruskals;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * CS350 - Lots Of Topics
@@ -15,6 +16,7 @@ import java.util.Map;
  */
 public class Kruskals {
     private static final File file = new File("city-pairs.txt");
+    private static final Map<String, City> cities = new HashMap<>();
 
     private static String[] allCities;
     private static FileReader fr;
@@ -66,6 +68,22 @@ public class Kruskals {
         }
         br.close();
         fr.close();
+    }
+
+    private void addCitiesToMap() {
+        for (String city : allCities)
+            cities.put(city, new City(city));
+    }
+
+    private void addEdgesToCities() throws IOException {
+        fr = new FileReader(file);
+        br = new BufferedReader(fr);
+        String line = br.readLine();
+
+        while (line != null) {
+            cities.get(line.split(" ")[0]).addToEdgeList(cities.get(line.split(" ")[1]), Integer.parseInt(line.split(" ")[2]));
+        }
+
     }
 
 
