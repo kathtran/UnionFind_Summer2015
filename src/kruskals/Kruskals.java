@@ -20,6 +20,7 @@ public class Kruskals {
     private static String[] allCities;
     private static FileReader fr;
     private static BufferedReader br;
+    private static int totalLength = 0;
     private static int i;
     private static final Kruskals kruskals = new Kruskals();
 
@@ -48,8 +49,6 @@ public class Kruskals {
 //            }
             kruskals.init();                       // Mark each city (vertex) as its own forest
 
-            City endOne;
-            City endTwo;
             // For each possible distance, starting with the shortest
             for (Object edge : weightedEdges) {
                 // For each city out of the 29 total cities
@@ -58,25 +57,43 @@ public class Kruskals {
                     for (Map.Entry<City, Integer> connectedCity : city.getValue().getEdgeList().entrySet()) {
                         // If the distance between the two cities is the one that we are looking for
                         // AND they are not already within the same forest, UNION them
-                        if (connectedCity.getValue() == edge &&
-                                !find(connectedCity.getKey()).equals(find(city.getValue())) &&
-                                !city.getValue().isVisited() && !connectedCity.getKey().isVisited()) {
-                            union(city.getValue(), cities.get(connectedCity.getKey().getName()));
-                            System.out.print(city.getValue().getName() + " " + connectedCity.getKey().getName() + " " + connectedCity.getValue() + "\n");
+//                        if (connectedCity.getValue() == edge) {
+//                            if (!city.getValue().isVisited() && !connectedCity.getKey().isVisited()) {
+//                                union(city.getValue(), cities.get(connectedCity.getKey().getName()));
+//                                System.out.print(city.getValue().getName() + " " + connectedCity.getKey().getName() + " " + connectedCity.getValue() + "\n");
+//                                totalLength += 1;
+//                            }
+//                        }
+                        if (find(city.getValue()).equals(find(connectedCity.getKey())))
                             break;
+                        if (connectedCity.getValue() == edge) {
+                            totalLength += 1;
+                            union(city.getValue(), connectedCity.getKey());
+                            System.out.print(city.getValue().getName() + " " + connectedCity.getKey().getName() + " " + connectedCity.getValue() + "\n");
                         }
                     }
                 }
+//                System.out.println(edge);
             }
+            System.out.println("TOTAL LENGTH: " + totalLength);
 
 
-        } catch (FileNotFoundException e) {
+        } catch (
+                FileNotFoundException e
+                )
+
+        {
             System.err.println("File not found!");
             System.exit(1);
-        } catch (IOException e) {
+        } catch (
+                IOException e
+                )
+
+        {
             System.err.println("IO-related error has occurred!");
             System.exit(1);
         }
+
     }
 
     /**
