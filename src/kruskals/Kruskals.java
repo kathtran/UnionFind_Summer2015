@@ -21,7 +21,7 @@ public class Kruskals {
     private static FileReader fr;
     private static BufferedReader br;
     private static int totalLength = 0;
-    private static int i;
+    private static int partitionCount = 0;
     private static final Kruskals kruskals = new Kruskals();
 
     private long starting;
@@ -29,7 +29,6 @@ public class Kruskals {
     public static void main(String[] args) {
         try {
             readCities();                          // Load cities
-
 //            for (String city : allCities) {
 //                System.out.println(city);
 //            }
@@ -49,32 +48,9 @@ public class Kruskals {
 //            }
             kruskals.init();                       // Mark each city (vertex) as its own forest
 
-            // For each possible distance, starting with the shortest
-            for (Object edge : weightedEdges) {
-                // For each city out of the 29 total cities
-                for (Map.Entry<String, City> city : cities.entrySet()) {
-                    // For each connected city
-                    for (Map.Entry<City, Integer> connectedCity : city.getValue().getEdgeList().entrySet()) {
-                        if (!find(city.getValue()).equals(find(connectedCity.getKey())) && connectedCity.getValue() == edge) {
-                            totalLength += 1;
-                            union(city.getValue(), cities.get(connectedCity.getKey().getName()));
-                            System.out.print(city.getValue().getName() + " " + connectedCity.getKey().getName() + " " + connectedCity.getValue() + "\n");
-                        }
-                    }
-                }
-//                System.out.println(edge);
-            }
+            findMST();
             System.out.println("TOTAL LENGTH: " + totalLength);
-
-
-            int partitionCount = 0;
-            for (Map.Entry<String, City> entry : cities.entrySet()) {
-                if (!find(entry.getValue()).isDisplayed()) {
-                    System.out.println(find(entry.getValue()).getName());
-                    find(entry.getValue()).setDisplayed(true);
-                    partitionCount = partitionCount + 1;
-                }
-            }
+            findNumberOfPartitions();
             System.out.println("\nThere exists " + partitionCount + " partitions.");
 
         } catch (FileNotFoundException e) {
@@ -83,6 +59,40 @@ public class Kruskals {
         } catch (IOException e) {
             System.err.println("IO-related error has occurred!");
             System.exit(1);
+        }
+    }
+
+    /**
+     * Finds the minimum spanning tree.
+     *
+     * @return number of edges that are in the MST
+     */
+    private static void findMST() {
+        for (Object edge : weightedEdges) {                                                                 // For each possible distance, starting with the shortest
+            for (Map.Entry<String, City> city : cities.entrySet()) {                                        // For each city out of the 29 total cities
+                for (Map.Entry<City, Integer> connectedCity : city.getValue().getEdgeList().entrySet()) {   // For each connected city
+                    if (!find(city.getValue()).equals(find(connectedCity.getKey())) && connectedCity.getValue() == edge) {
+                        totalLength += 1;
+                        union(city.getValue(), cities.get(connectedCity.getKey().getName()));
+                        System.out.print(city.getValue().getName() + " " + connectedCity.getKey().getName() + " " + connectedCity.getValue() + "\n");
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Find the number of partitions that exist.
+     *
+     * @return number of partitions
+     */
+    private static void findNumberOfPartitions() {
+        for (Map.Entry<String, City> entry : cities.entrySet()) {
+            if (!find(entry.getValue()).isDisplayed()) {
+                System.out.println(find(entry.getValue()).getName());
+                find(entry.getValue()).setDisplayed(true);
+                partitionCount += 1;
+            }
         }
     }
 
@@ -99,7 +109,7 @@ public class Kruskals {
         if (line != null)
             allCities[0] = line.split(" ")[0];
 
-        i = 1;
+        int i = 1;
         while (line != null && i < 29) {
             while (allCities[i - 1].equals(line.split(" ")[0])) {
                 line = br.readLine();
