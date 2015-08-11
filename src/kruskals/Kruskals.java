@@ -14,7 +14,7 @@ import java.util.Map;
  * @author Kathleen Tran
  */
 public class Kruskals {
-    private static final Map<Vertex, Vertex> cities = new HashMap<>();
+    private static final Map<String, Vertex> cities = new HashMap<>();
     private static final File file = new File("city-pairs.txt");
 
     private static String[] allCities;
@@ -74,7 +74,7 @@ public class Kruskals {
      */
     private void createVerticesFromCities() {
         for (String city : allCities)
-            cities.put(new Vertex(city), null);
+            cities.put(city, new Vertex(city));
     }
 
     private void mapCitiesToCities() throws IOException {
@@ -92,8 +92,8 @@ public class Kruskals {
      * Initializes vertices by setting each vertex's parent pointer to itself.
      */
     private void init() {
-        for (Map.Entry<Vertex, Vertex> city : cities.entrySet())
-            city.getKey().setParent(city.getKey());
+        for (Map.Entry<String, Vertex> city : cities.entrySet())
+            city.getValue().setParent(city.getValue());
     }
 
     /**

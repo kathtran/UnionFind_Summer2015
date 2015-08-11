@@ -32,18 +32,12 @@ public class UnionFind {
         unionFind = new UnionFind(makeVertices);
         unionFind.displayAllVertices();
         unionFind.startTime();
+        
+        unionFind.init();
+        createMappings();
+        displayPartitions();
 
-        try {
-            unionFind.init();
-            createMappings();
-            displayPartitions();
-
-            System.out.println("\nTotal running time: " + unionFind.endTimer() + " s    ");
-        } catch (StackOverflowError ex) {
-            System.err.println("An expected error that is associated with utilizing the RNG to map vertices has occurred. " +
-                    "Please just re-run the program.");
-            System.exit(1);
-        }
+        System.out.println("\nTotal running time: " + unionFind.endTimer() + " s    ");
     }
 
     /**
@@ -137,8 +131,8 @@ public class UnionFind {
     public void union(Vertex a, Vertex b) {
         Vertex aRep = find(a);
         Vertex bRep = find(b);
-        a.setParent(b);
-        System.out.println("Vertex " + a.getValue() + " has been mapped to vertex " + b.getValue() + ".");
+        aRep.setParent(bRep);
+        System.out.println("Mapping forest containing " + a.getValue() + " to forest containing " + b.getValue() + ".");
     }
 
     /**
