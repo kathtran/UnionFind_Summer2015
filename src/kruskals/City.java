@@ -42,4 +42,9 @@ public class City {
     public void setVisited(boolean visited) {
         this.visited = visited;
     }
+
+    public void displayEdgeList() {
+        for (Map.Entry<City, Integer> entry : edgeList.entrySet())
+            System.out.println("CITY: " + entry.getKey().getName() + " & DISTANCE: " + entry.getValue());
+    }
 }

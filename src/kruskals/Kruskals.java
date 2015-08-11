@@ -29,11 +29,21 @@ public class Kruskals {
     public static void main(String[] args) {
         try {
             readCities();
-//            kruskals.init();
 
             for (String city : allCities) {
                 System.out.println(city);
             }
+            System.out.println("\nCities printed from ARRAY. Now printing from MAP\n\n");
+            addCitiesToMap();
+            for (Map.Entry<String, City> entry : cities.entrySet())
+                System.out.println(entry.getKey());
+            System.out.println("\nCities printed from MAP. Now printing from EDGELIST\n\n");
+            addEdgesToCities();
+            for (Map.Entry<String, City> entry : cities.entrySet()) {
+                System.out.print("CITY : " + entry.getKey() + "\nEDGE LIST : \n");
+                entry.getValue().displayEdgeList();
+            }
+//            kruskals.init();
 
         } catch (FileNotFoundException e) {
             System.err.println("File not found!");
@@ -70,20 +80,22 @@ public class Kruskals {
         fr.close();
     }
 
-    private void addCitiesToMap() {
+    private static void addCitiesToMap() {
         for (String city : allCities)
             cities.put(city, new City(city));
     }
 
-    private void addEdgesToCities() throws IOException {
+    private static void addEdgesToCities() throws IOException {
         fr = new FileReader(file);
         br = new BufferedReader(fr);
         String line = br.readLine();
 
         while (line != null) {
             cities.get(line.split(" ")[0]).addToEdgeList(cities.get(line.split(" ")[1]), Integer.parseInt(line.split(" ")[2]));
+            line = br.readLine();
         }
-
+        br.close();
+        fr.close();
     }
 
 
