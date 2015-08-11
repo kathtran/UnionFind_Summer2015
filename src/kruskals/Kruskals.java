@@ -30,20 +30,20 @@ public class Kruskals {
         try {
             readCities();
 
-            for (String city : allCities) {
-                System.out.println(city);
-            }
-            System.out.println("\nCities printed from ARRAY. Now printing from MAP\n\n");
+//            for (String city : allCities) {
+//                System.out.println(city);
+//            }
+//            System.out.println("\nCities printed from ARRAY. Now printing from MAP\n\n");
             addCitiesToMap();
-            for (Map.Entry<String, City> entry : cities.entrySet())
-                System.out.println(entry.getKey());
-            System.out.println("\nCities printed from MAP. Now printing from EDGELIST\n\n");
+//            for (Map.Entry<String, City> entry : cities.entrySet())
+//                System.out.println(entry.getKey());
+//            System.out.println("\nCities printed from MAP. Now printing from EDGELIST\n\n");
             addEdgesToCities();
             for (Map.Entry<String, City> entry : cities.entrySet()) {
                 System.out.print("CITY : " + entry.getKey() + "\nEDGE LIST : \n");
                 entry.getValue().displayEdgeList();
             }
-//            kruskals.init();
+            kruskals.init();
 
         } catch (FileNotFoundException e) {
             System.err.println("File not found!");
@@ -104,6 +104,18 @@ public class Kruskals {
     private void init() {
         for (Map.Entry<String, City> entry : cities.entrySet())
             entry.getValue().setForest(entry.getValue());
+    }
+
+    /**
+     * Finds the canonical representative of the forest.
+     *
+     * @param city some city
+     * @return the canonical representative of the given city
+     */
+    private City find(City city) {
+        if (city.equals(city.getForest()))
+            return city;
+        return find(city.getForest());
     }
 
     /**
